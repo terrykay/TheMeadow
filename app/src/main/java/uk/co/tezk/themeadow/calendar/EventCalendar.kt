@@ -12,13 +12,12 @@ import java.io.IOException
 import java.io.StringReader
 import java.util.*
 
-class EventCalendar(apiClient: MeadowRetrofit): Callback {
+class EventCalendar {
     /**
-     * Deals with Naturist Foundation event calendar
+     * Deals with event calendar
      *
      */
-    var calendar: Calendar? = null
-
+    
     fun refreshCalendar() {
         val url = MeadowPreferences.getInstance().get(MeadowPreferences.CALENDAR_URL)
 
@@ -26,22 +25,26 @@ class EventCalendar(apiClient: MeadowRetrofit): Callback {
                 .url(url)
                 .build()
         OkHttpClient().newCall(request).enqueue(
-                this
+                object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        if (response.isSuccessful) response.body()?.let {
+                            val calendar = CalendarBuilder().build(StringReader(it.string()))
+                            EventCalendar.calendar = calendar
+                            calendar.components.forEach { component ->
+                                val event = CalendarEvent(component)
+                                Log.d("EC", "event = $event")
+                            }
+                        }
+                    }
+                }
         )
     }
 
-    override fun onFailure(call: Call, e: IOException) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onResponse(call: Call, response: Response) {
-        if (response.isSuccessful) response.body()?.let {
-            val calendar = CalendarBuilder().build(StringReader(it.string()))
-            this.calendar = calendar
-            calendar.components.forEach { component ->
-                val event = CalendarEvent(component)
-                Log.d("EC", "event = $event")
-            }
-        }
+    companion object {
+        var calendar: Calendar? = null
     }
 }
