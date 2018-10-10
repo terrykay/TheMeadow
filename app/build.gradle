@@ -31,9 +31,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
@@ -43,12 +40,16 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.4.0'
     implementation 'com.google.dagger:dagger:2.17'
     implementation 'io.reactivex:rxandroid:1.2.1'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
-    implementation 'com.google.dagger:dagger-android:2.17'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
+    kapt 'com.google.dagger:dagger-compiler:2.17'
+
+    // iCal 4
     implementation 'org.mnode.ical4j:ical4j:3.0.1'
     implementation 'org.jsr107.ri:cache-ri-impl:1.1.0'
-    compile 'backport-util-concurrent:backport-util-concurrent:3.1'
-    compile 'commons-codec:commons-codec:1.8'
-    compile 'commons-lang:commons-lang:2.6'
+    implementation 'backport-util-concurrent:backport-util-concurrent:3.1'
+    implementation 'commons-codec:commons-codec:1.8'
+    implementation 'commons-lang:commons-lang:2.6'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
