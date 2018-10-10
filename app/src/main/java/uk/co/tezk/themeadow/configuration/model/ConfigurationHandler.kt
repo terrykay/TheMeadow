@@ -1,10 +1,12 @@
-package uk.co.tezk.themeadow.configuration.model
+package uk.co.tezk.themeadow.configuration
 
+import android.util.Log
 import retrofit2.HttpException
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import uk.co.tezk.themeadow.preferences.MeadowPreferences
 import uk.co.tezk.themeadow.repository.MeadowRetrofit
+import javax.net.ssl.SSLHandshakeException
 
 class ConfigurationHandler {
     fun retrieveConfig(meadowClient: MeadowRetrofit, callBack: (() -> Unit)? = null) {
@@ -15,12 +17,18 @@ class ConfigurationHandler {
                     MeadowPreferences.getInstance().set(MeadowPreferences.CALENDAR_URL, meadowConfig.calendarUrl)
                     callBack?.let { it() }
                 }, {
-                    it.printStackTrace()
-                    if (it is HttpException) {
-                        when (it.code()) {
-                            404 -> { /*can't find config! */ }
-                            else -> { }
+
+                    when (it) {
+                        is HttpException -> {
+                            when (it.code()) {
+                                404 -> { /*can't find config! */ }
+                                else -> { }
+                            }
                         }
+                        is SSLHandshakeException -> {
+                            Log.d("CH", "SSL handshake - ${it.message}")
+                        }
+                        else -> {}
                     }
                 })
     }
