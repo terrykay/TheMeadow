@@ -33,6 +33,6 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        ConfigurationHandler().retrieveConfig(meadowClient) { EventCalendar(meadowClient).refreshCalendar() }
+        ConfigurationHandler().retrieveConfig(meadowClient) { _ -> EventCalendar().refreshCalendar() }
     }
 }
